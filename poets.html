@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="poetsAndPoems">Dead Poets Society — Poets & Poems</title>
+    <meta name="description" content="Meet poets and explore their works in the Dead Poets Society." />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="page-shell">
+        <header class="site-header">
+            <div class="topbar">
+                <div class="logo">
+                    <span class="logo-mark">DPS</span>
+                    <span class="logo-text">DEAD POETS SOCIETY</span>
+                </div>
+                <div class="search-global">
+                    <input aria-label="Search site" data-i18n-placeholder="search" data-i18n-aria-label="search"
+                        placeholder="Search" />
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html" data-i18n="home">Home</a>
+                    <a href="poets.html" data-i18n="poetsAndPoems">Poets & Poems</a>
+                    <a href="about.html" data-i18n="aboutUs">About Us</a>
+                </nav>
+                <div class="actions">
+                    <button id="menuToggle" class="icons menu-toggle" type="button" aria-label="Toggle menu"
+                        aria-expanded="false">☰</button>
+                    <button id="langToggle" class="lang" type="button" data-i18n-aria-label="langToggle" data-lang="en">
+                        <span>EN</span>
+                        <span>KA</span>
+                    </button>
+                </div>
+            </div>
+            <div class="breadcrumb-bar">
+                <div class="breadcrumb"><span data-i18n="homeBreadcrumb">Home</span> &nbsp;›&nbsp; <span
+                        data-i18n="poetsBreadcrumb">Poets & Poems</span></div>
+            </div>
+            <div class="page-title">
+                <h2 data-i18n="poetsAndPoems">Poets & Poems</h2>
+            </div>
+        </header>
+
+        <main class="app-grid" style="grid-template-columns: 1fr; gap: 20px;">
+            <section class="list-section">
+                <div class="top-poets-section">
+                    <div class="top-poets-grid">
+                        <article class="top-card">
+                            <div class="top-card-header">
+                                <div>
+                                    <p class="eyebrow" data-i18n="topPoets">Top Poets</p>
+                                    <h4 data-i18n="mostLikes">Most likes</h4>
+                                </div>
+                                <button id="likesToggle" class="bottom-link" data-i18n="seeFullList">See full
+                                    list</button>
+                            </div>
+                            <ul id="likesTopList" class="rank-list"></ul>
+                        </article>
+                        <article class="top-card">
+                            <div class="top-card-header">
+                                <div>
+                                    <p class="eyebrow" data-i18n="topPoets">Top Poets</p>
+                                    <h4 data-i18n="mostPosts">Most posts</h4>
+                                </div>
+                                <button id="postsToggle" class="bottom-link" data-i18n="seeFullList">See full
+                                    list</button>
+                            </div>
+                            <ul id="postsTopList" class="rank-list"></ul>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <div>
+                        <p class="eyebrow" data-i18n="publishedPoets">Published poets</p>
+                        <h3 data-i18n="authorsAndPoems">Only authors and poems from our site</h3>
+                    </div>
+                    <p class="results-count" id="publishedCount">Loading published works…</p>
+                </div>
+
+                <div id="poetsList" class="card-grid"></div>
+            </section>
+        </main>
+    </div>
+    <script src="i18n.js"></script>
+    <script src="poets.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="siteTitle">Dead Poets Society</title>
+    <meta name="description" content="Dead Poets Society brings together poets and their works in one place." />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="page-shell">
+        <header class="site-header">
+            <div class="topbar">
+                <div class="logo">
+                    <span class="logo-mark">DPS</span>
+                    <span class="logo-text">DEAD POETS SOCIETY</span>
+                </div>
+
+                <div class="search-global">
+                    <input aria-label="Search site" data-i18n-placeholder="search" data-i18n-aria-label="search"
+                        placeholder="Search" />
+                </div>
+
+                <nav class="main-nav">
+                    <a href="poets.html" data-i18n="poetsAndPoems">Poets & Poems</a>
+                    <a href="about.html" data-i18n="aboutUs">About Us</a>
+                </nav>
+
+                <div class="actions">
+                    <button id="menuToggle" class="icons menu-toggle" type="button" aria-label="Toggle menu"
+                        aria-expanded="false">☰</button>
+                    <button id="langToggle" class="lang" type="button" data-i18n-aria-label="langToggle" data-lang="en">
+                        <span>EN</span>
+                        <span>KA</span>
+                    </button>
+                    <div class="auth-actions">
+                        <button id="signupBtn" class="pill" data-i18n="signup">Sign up</button>
+                        <button id="loginBtn" class="pill" data-i18n="login">Log in</button>
+                        <button id="avatarBtn" class="avatar-btn" title="Your profile" data-i18n-title="profile"
+                            style="display:none">
+                            <img id="avatarImg" src="" alt="Profile" />
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="breadcrumb-bar">
+                <div class="breadcrumb"><span data-i18n="homeBreadcrumb">Home</span> &nbsp;›&nbsp; <span
+                        data-i18n="poetsBreadcrumb">Poets & Poems</span> &nbsp;›&nbsp; <span
+                        data-i18n="poemsBreadcrumb">Poems</span></div>
+            </div>
+
+            <div class="page-title">
+                <h2>Poems</h2>
+            </div>
+        </header>
+
+        <header class="hero">
+            <div class="hero-copy">
+                <p class="eyebrow" data-i18n="heroEyebrow">Poetry, softened for the heart</p>
+                <h1 data-i18n="heroTitle">Discover poems that feel like a warm cup of twilight.</h1>
+                <p class="hero-text" data-i18n="heroText">
+                    Wander through tender verses, dreamy reflections, and uplifting lines curated for modern readers.
+                </p>
+                <div class="search-box">
+                    <input id="searchInput" type="text" data-i18n-placeholder="searchBy"
+                        placeholder="Search by title, mood, or author" />
+                </div>
+            </div>
+
+            <div class="hero-card">
+                <p class="hero-card-label" data-i18n="todayPick">Today’s gentle pick</p>
+                <h2 id="featuredTitle"></h2>
+                <p id="featuredExcerpt"></p>
+                <button class="ghost-button" id="featuredButton" data-i18n="openPoem">Open poem</button>
+            </div>
+        </header>
+
+        <section class="controls">
+            <div class="pill-list" id="moodFilters"></div>
+        </section>
+
+        <main class="app-grid">
+            <section class="list-section">
+                <div class="section-header">
+                    <div>
+                        <p class="eyebrow" data-i18n="newArrivals">New arrivals</p>
+                        <h3 data-i18n="curatedPoems">Curated poems</h3>
+                    </div>
+                    <p id="resultsCount" class="results-count"></p>
+                </div>
+
+                <div id="poemList" class="card-grid"></div>
+            </section>
+
+            <aside class="detail-panel">
+                <div class="detail-card">
+                    <p class="eyebrow" data-i18n="readingView">Reading view</p>
+                    <h3 id="detailTitle"></h3>
+                    <p class="detail-author" id="detailAuthor"></p>
+                    <p class="detail-description" id="detailDescription"></p>
+                    <div id="detailLines" class="poem-body"></div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- Auth modal -->
+    <div id="authModal" class="modal hidden">
+        <div class="modal-card">
+            <button class="modal-close" id="authClose">✕</button>
+            <h3 id="authTitle" data-i18n="login">Log in</h3>
+            <form id="authForm">
+                <div class="form-row" id="nameRow" style="display:none">
+                    <label data-i18n="yourName">Name</label>
+                    <input id="authName" placeholder="Your name" data-i18n-placeholder="yourNamePlaceholder" />
+                </div>
+                <div class="form-row">
+                    <label data-i18n="email">Email</label>
+                    <input id="authEmail" type="email" placeholder="you@example.com" required
+                        data-i18n-placeholder="emailPlaceholder" />
+                </div>
+                <div class="form-row">
+                    <label data-i18n="password">Password</label>
+                    <input id="authPassword" type="password" placeholder="Choose a password" required
+                        data-i18n-placeholder="passwordPlaceholder" />
+                </div>
+                <div class="form-row">
+                    <button type="submit" class="ghost-button" id="authSubmit" data-i18n="continue">Continue</button>
+                    <button type="button" id="toggleAuth" class="pill" data-i18n="switchToSignUp">Switch to Sign
+                        up</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Post modal -->
+    <div id="postModal" class="modal hidden">
+        <div class="modal-card">
+            <button class="modal-close" id="postClose">✕</button>
+            <h3 data-i18n="postAPoem">Post a poem</h3>
+            <form id="postForm">
+                <div class="form-row">
+                    <label data-i18n="titleLabel">Title</label>
+                    <input id="postTitle" required />
+                </div>
+                <div class="form-row">
+                    <label data-i18n="excerptLabel">Excerpt</label>
+                    <input id="postExcerpt" />
+                </div>
+                <div class="form-row">
+                    <label data-i18n="moodLabel">Mood</label>
+                    <input id="postMood" data-i18n-placeholder="moodPlaceholder" placeholder="dreamy, hopeful..." />
+                </div>
+                <div class="form-row">
+                    <label data-i18n="linesLabel">Lines (one per line)</label>
+                    <textarea id="postLines" rows="6" required></textarea>
+                </div>
+                <div class="form-row">
+                    <button type="submit" class="ghost-button" data-i18n="publishButton">Publish</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Profile modal -->
+    <!-- profile page moved to profile.html -->
+
+    <script src="i18n.js"></script>
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

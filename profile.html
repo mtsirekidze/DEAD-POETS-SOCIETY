@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title data-i18n="profileTitle">Your Profile — Dead Poets Society</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="page-shell">
+        <header class="site-header">
+            <div class="topbar">
+                <div class="logo"><span class="logo-mark">DPS</span><span class="logo-text">DEAD POETS SOCIETY</span>
+                </div>
+                <div class="actions">
+                    <a href="index.html" class="pill" data-i18n="home">Home</a>
+                    <button id="langToggle" class="lang" type="button" data-i18n-aria-label="langToggle" data-lang="en">
+                        <span>EN</span>
+                        <span>KA</span>
+                    </button>
+                </div>
+            </div>
+            <div class="breadcrumb-bar">
+                <div class="breadcrumb"><span data-i18n="homeBreadcrumb">Home</span> &nbsp;›&nbsp; <span
+                        data-i18n="profileBreadcrumb">Profile</span></div>
+            </div>
+        </header>
+
+        <main style="margin-top:18px;">
+            <section class="detail-card">
+                <div class="profile-head">
+                    <div class="profile-avatar-wrap">
+                        <img id="profileAvatar" src="" alt="avatar" data-i18n="profileAvatarAlt" data-i18n-attr="alt" />
+                        <input id="avatarUpload" type="file" accept="image/*" style="display:none" />
+                        <button id="changeAvatar" class="pill" data-i18n="changePhoto">Change photo</button>
+                    </div>
+                    <div class="profile-meta">
+                        <h3 id="profileName">Your name</h3>
+                        <input id="profileNameInput"
+                            style="display:none; width:100%; padding:8px; margin-top:6px; border-radius:8px;" />
+                        <p id="profileEmail" style="display:none">you@example.com</p>
+                        <p id="profileBioDisplay" style="margin:8px 0 0; color:var(--muted);">Add a short bio to
+                            introduce yourself.</p>
+                        <textarea id="profileBioInput" rows="3"
+                            style="display:none; width:100%; padding:8px; margin-top:6px; border-radius:8px;"></textarea>
+                        <div class="profile-stats" style="margin-top:8px; display:flex; gap:12px; align-items:center;">
+                            <span id="statPosts">0 poems</span>
+                            <span id="statLikes">0 likes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top:16px; display:flex; gap:12px; align-items:center;">
+                    <button id="postBtnProfile" class="ghost-button" data-i18n="postAPoem">Post a poem</button>
+                    <button id="editProfile" class="pill">Edit profile</button>
+                    <button id="saveProfile" class="pill" style="display:none;">Save</button>
+                    <button id="cancelEdit" class="pill" style="display:none;">Cancel</button>
+                    <button id="logoutProfile" class="pill" data-i18n="logOut">Log out</button>
+                </div>
+
+                <hr style="margin:18px 0">
+                <h4 data-i18n="yourPoems">Your poems</h4>
+                <div id="profilePoems" class="card-grid"></div>
+
+                <hr style="margin:18px 0">
+                <h4 data-i18n="publishAPoem">Publish a poem</h4>
+                <form id="postFormProfile">
+                    <div class="form-row"><label data-i18n="titleLabel">Title</label><input id="postTitleP" required>
+                    </div>
+                    <div class="form-row"><label data-i18n="excerptLabel">Excerpt</label><input id="postExcerptP"></div>
+                    <div class="form-row"><label data-i18n="moodLabel">Mood</label><input id="postMoodP"
+                            data-i18n-placeholder="moodPlaceholder" placeholder="dreamy, hopeful...">
+                    </div>
+                    <div class="form-row"><label data-i18n="linesLabel">Lines (one per line)</label><textarea
+                            id="postLinesP" rows="6" required></textarea></div>
+                    <div class="form-row" style="text-align:right"><button id="publishProfileBtn" class="pill"
+                            type="button" disabled data-i18n="publishButton">Publish</button></div>
+                </form>
+
+                <hr style="margin:18px 0">
+                <h4 data-i18n="preview">Preview</h4>
+                <section id="postPreview" class="detail-card"
+                    style="min-height:120px;padding:12px;background:#fff8f9;border:1px solid #f1e8e9;border-radius:8px">
+                    <div id="previewContent" style="opacity:0.8;color:#555" data-i18n="fillFormPreview">Fill the form to
+                        preview your poem here.
+                    </div>
+                </section>
+            </section>
+        </main>
+    </div>
+
+    <script src="i18n.js"></script>
+    <script src="profile.js"></script>
+</body>
+
+</html>
