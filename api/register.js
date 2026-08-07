@@ -5,22 +5,23 @@ function sendJSON(res, status, payload) {
   res.end(JSON.stringify(payload));
 }
 
-module.exports = (req, res) => {
+module.exports = async (req, res) => {
   if (req.method !== 'POST') return sendJSON(res, 405, { error: 'Method not allowed' });
   let body = '';
   req.on('data', (chunk) => (body += chunk));
-  req.on('end', () => {
+  req.on('end', async () => {
     try {
       const { name, email, password } = JSON.parse(body || '{}');
       if (!email || !password) return sendJSON(res, 400, { error: 'Missing fields' });
-      const users = db.getUsers();
-      if (users.find((u) => u.email === email)) return sendJSON(res, 409, { error: 'Email already registered' });
-      const user = { id: Date.now(), name: name || email.split('@')[0], email, password };
-      users.push(user);
-      db.saveUsers(users);
+      const normalizedEmail = String(email).toLowerCase();
+      const existing = await db.findUserByEmail(normalizedEmail);
+      if (existing) return sendJSON(res, 409, { error: 'Email already registered' });
+      const user = { id: Date.now(), name: name || normalizedEmail.split('@')[0], email: normalizedEmail, password };
+      await db.createUser(user);
       const safe = { id: user.id, name: user.name, email: user.email };
       return sendJSON(res, 201, { ok: true, user: safe });
     } catch (e) {
+      console.error('register error', e);
       return sendJSON(res, 500, { error: 'Server error' });
     }
   });

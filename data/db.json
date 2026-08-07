@@ -5,6 +5,12 @@
       "name": "Test User",
       "email": "test@example.com",
       "password": "passwd"
+    },
+    {
+      "id": 1786134153423,
+      "name": "mate Cirekidze",
+      "email": "tsirekidzemate35@gmail.com",
+      "password": "matemate123"
     }
   ],
   "poems": [
