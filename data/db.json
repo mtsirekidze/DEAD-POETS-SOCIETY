@@ -1,31 +1,17 @@
 {
-  "users": [
-    {
-      "id": 1786133360706,
-      "name": "Test User",
-      "email": "test@example.com",
-      "password": "passwd"
-    },
-    {
-      "id": 1786134153423,
-      "name": "mate Cirekidze",
-      "email": "tsirekidzemate35@gmail.com",
-      "password": "matemate123"
-    }
-  ],
+  "users": [],
   "poems": [
     {
-      "id": 1786133469599,
+      "id": 1786139851567,
       "likes": 0,
-      "createdAt": "2026-08-07T20:11:09.599Z",
-      "title": "A New Poem",
-      "author": "Test User",
-      "mood": "hopeful",
-      "excerpt": "An excerpt",
-      "description": "An excerpt",
+      "createdAt": "2026-08-07T21:57:31.567Z",
+      "title": "აწს",
+      "author": "mate Cirekidze",
+      "mood": "other",
+      "excerpt": "",
+      "description": "",
       "lines": [
-        "line1",
-        "line2"
+        "წაწა"
       ]
     }
   ]
