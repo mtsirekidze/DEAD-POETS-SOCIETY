@@ -1,5 +1,17 @@
-// load poems from storage (preserve uploaded poems)
-const poems = JSON.parse(localStorage.getItem('poems')) || [];
+// load poems from server
+const poems = [];
+
+async function loadPoems() {
+    try {
+        const res = await fetch('/api/poems');
+        const data = await res.json();
+        if (data && data.poems) {
+            poems.splice(0, poems.length, ...data.poems);
+        }
+    } catch (e) {
+        console.error('Failed to load poems', e);
+    }
+}
 
 // ensure likes exist on all poems and normalize createdAt
 poems.forEach((p) => {
@@ -9,9 +21,11 @@ poems.forEach((p) => {
 
 let activeMood = 'all';
 let searchTerm = '';
-let selectedPoemId = poems[0] ? poems[0].id : null;
+let selectedPoemId = null;
 
-const filters = ['all', ...new Set(poems.map((poem) => poem.mood).filter(Boolean))];
+function getAvailableFilters() {
+    return ['all', ...new Set(poems.map((poem) => poem.mood).filter(Boolean))];
+}
 
 const poemList = document.getElementById('poemList');
 const moodFilters = document.getElementById('moodFilters');
@@ -38,14 +52,12 @@ function getCurrentUser() {
 function toggleLike(poemId) {
     const p = poems.find((x) => x.id === poemId);
     if (!p) return;
+    // optimistic UI
     p.likes = (p.likes || 0) + 1;
-    savePoems();
     render();
+    fetch(`/api/poems/${poemId}/like`, { method: 'POST' }).catch((e) => console.error(e));
 }
 
-function savePoems() {
-    localStorage.setItem('poems', JSON.stringify(poems));
-}
 
 function getFilteredPoems() {
     const query = searchTerm.toLowerCase();
@@ -62,6 +74,7 @@ function getFilteredPoems() {
 function renderFilters() {
     if (!moodFilters) return;
     moodFilters.innerHTML = '';
+    const filters = getAvailableFilters();
     filters.forEach((filter) => {
         const button = document.createElement('button');
         button.className = `pill ${activeMood === filter ? 'active' : ''}`;
@@ -127,11 +140,15 @@ function renderPoems() {
     });
 }
 
-function deletePoem(poemId) {
+async function deletePoem(poemId) {
     const index = poems.findIndex((p) => p.id === poemId);
     if (index === -1) return;
+    try {
+        await fetch(`/api/poems/${poemId}`, { method: 'DELETE' });
+    } catch (e) {
+        console.error('Failed to delete poem', e);
+    }
     poems.splice(index, 1);
-    savePoems();
     if (selectedPoemId === poemId) selectedPoemId = poems[0] ? poems[0].id : null;
     render();
 }
@@ -204,10 +221,13 @@ document.addEventListener('authchange', render);
 
 render();
 
+// initial load from server
+loadPoems().then(render);
+
 // Handle post submissions from the main page post modal
 const mainPostForm = document.getElementById('postForm');
 if (mainPostForm) {
-    mainPostForm.addEventListener('submit', (e) => {
+    mainPostForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const title = document.getElementById('postTitle') ? document.getElementById('postTitle').value.trim() : '';
         const excerpt = document.getElementById('postExcerpt') ? document.getElementById('postExcerpt').value.trim() : '';
@@ -215,9 +235,14 @@ if (mainPostForm) {
         const lines = document.getElementById('postLines') ? document.getElementById('postLines').value.split('\n').map(l => l.trim()).filter(Boolean) : [];
         if (!title || !lines.length) return alert(t('fillFormPreview'));
         const user = getCurrentUser();
-        const poem = { id: Date.now(), title, author: user ? user.name : 'Anonymous', mood, excerpt, description: excerpt, lines, likes: 0, createdAt: new Date().toISOString() };
-        poems.unshift(poem);
-        savePoems();
+        const poemPayload = { title, author: user ? user.name : 'Anonymous', mood, excerpt, description: excerpt, lines };
+        try {
+            const res = await fetch('/api/poems', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(poemPayload) });
+            const data = await res.json();
+            if (res.ok && data.poem) poems.unshift(data.poem);
+        } catch (e) {
+            console.error('Failed to save poem', e);
+        }
         mainPostForm.reset();
         if (typeof closeModal === 'function') closeModal('postModal');
         render();

@@ -1,4 +1,13 @@
-const publishedPoems = JSON.parse(localStorage.getItem('poems')) || [];
+const publishedPoems = [];
+async function loadPublished() {
+    try {
+        const res = await fetch('/api/poems');
+        const data = await res.json();
+        if (data && data.poems) {
+            publishedPoems.splice(0, publishedPoems.length, ...data.poems);
+        }
+    } catch (e) { console.error('Failed to load published poems', e); }
+}
 const poetsList = document.getElementById('poetsList');
 const publishedCount = document.getElementById('publishedCount');
 const likesTopList = document.getElementById('likesTopList');
@@ -97,7 +106,7 @@ function handlePostsToggle() {
     renderTopLists();
 }
 
-renderPublishedPoets();
+loadPublished().then(renderPublishedPoets);
 
 document.addEventListener('languagechange', () => {
     renderPublishedPoets();

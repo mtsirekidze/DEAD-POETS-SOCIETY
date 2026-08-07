@@ -1,8 +1,17 @@
 // Profile page script
-(function () {
-    const users = JSON.parse(localStorage.getItem('users')) || [];
+(async function () {
     let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-    let poems = JSON.parse(localStorage.getItem('poems')) || [];
+    let poems = [];
+
+    async function loadPoems() {
+        try {
+            const res = await fetch('/api/poems');
+            const data = await res.json();
+            if (data && data.poems) poems.splice(0, poems.length, ...data.poems);
+        } catch (e) {
+            console.error('Failed to load poems', e);
+        }
+    }
 
     if (!currentUser) {
         // not logged in -> redirect home
@@ -26,8 +35,7 @@
     const postBtnProfile = document.getElementById('postBtnProfile');
     const logoutProfile = document.getElementById('logoutProfile');
 
-    function saveUsers(u) { localStorage.setItem('users', JSON.stringify(u)); }
-    function savePoems(p) { poems = p; localStorage.setItem('poems', JSON.stringify(p)); }
+    function saveCurrentUserLocal(u) { if (u) localStorage.setItem('currentUser', JSON.stringify(u)); else localStorage.removeItem('currentUser'); }
 
     function render() {
         // refresh currentUser from storage (in case updated elsewhere)
@@ -77,11 +85,13 @@
 
     function formatDate(iso) { if (!iso) return ''; const d = new Date(iso); return d.toLocaleString(); }
 
-    function deletePoem(poemId) {
+    async function deletePoem(poemId) {
         const index = poems.findIndex(p => p.id === poemId);
         if (index === -1) return;
+        try {
+            await fetch(`/api/poems/${poemId}`, { method: 'DELETE' });
+        } catch (e) { console.error('Failed to delete', e); }
         poems.splice(index, 1);
-        savePoems(poems);
         render();
     }
 
@@ -90,27 +100,33 @@
         const file = e.target.files && e.target.files[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onload = function (ev) {
+        reader.onload = async function (ev) {
             const data = ev.target.result;
-            // update users list
-            const uidx = users.findIndex(u => u.email === currentUser.email);
-            if (uidx > -1) { users[uidx].picture = data; saveUsers(users); }
-            currentUser.picture = data;
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            profileAvatar.src = data;
+            if (!currentUser || !currentUser.id) return;
+            try {
+                const res = await fetch(`/api/users/${currentUser.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ picture: data }) });
+                const rdata = await res.json();
+                if (res.ok && rdata.user) {
+                    currentUser = rdata.user;
+                    saveCurrentUserLocal(currentUser);
+                    profileAvatar.src = currentUser.picture;
+                }
+            } catch (err) { console.error('Failed to upload avatar', err); }
         };
         reader.readAsDataURL(file);
     });
 
-    document.getElementById('postFormProfile').addEventListener('submit', (e) => {
+    document.getElementById('postFormProfile').addEventListener('submit', async (e) => {
         e.preventDefault();
         const title = document.getElementById('postTitleP').value.trim();
         const excerpt = document.getElementById('postExcerptP').value.trim();
         const mood = document.getElementById('postMoodP').value.trim() || 'other';
         const lines = document.getElementById('postLinesP').value.split('\n').map(l => l.trim()).filter(Boolean);
-        const poem = { id: Date.now(), title, author: currentUser.name, mood, excerpt, description: excerpt, lines, likes: 0, createdAt: new Date().toISOString() };
-        poems.unshift(poem);
-        savePoems(poems);
+        try {
+            const res = await fetch('/api/poems', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, author: currentUser.name, mood, excerpt, description: excerpt, lines }) });
+            const data = await res.json();
+            if (res.ok && data.poem) poems.unshift(data.poem);
+        } catch (err) { console.error('Failed to publish', err); }
         // clear form
         document.getElementById('postFormProfile').reset();
         // hide floating publish and update UI
@@ -140,27 +156,20 @@
         if (cancelEditBtn) cancelEditBtn.style.display = 'none';
     }
 
-    function saveProfileChanges() {
+    async function saveProfileChanges() {
         const newName = (profileNameInput && profileNameInput.value.trim()) || currentUser.name;
         const newBio = (profileBioInput && profileBioInput.value.trim()) || '';
         const oldName = currentUser.name;
-        // update users list
-        const uidx = users.findIndex(u => u.email === currentUser.email);
-        if (uidx > -1) {
-            users[uidx].name = newName;
-            users[uidx].bio = newBio;
-            saveUsers(users);
-        }
-        // update poems authored by old name to new name
-        const updatedPoems = JSON.parse(localStorage.getItem('poems')) || poems;
-        let changed = false;
-        updatedPoems.forEach(p => { if (p.author === oldName) { p.author = newName; changed = true; } });
-        if (changed) { localStorage.setItem('poems', JSON.stringify(updatedPoems)); }
-
-        currentUser.name = newName;
-        currentUser.bio = newBio;
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        render();
+        try {
+            const res = await fetch(`/api/users/${currentUser.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: newName, bio: newBio, oldName }) });
+            const data = await res.json();
+            if (res.ok && data.user) {
+                currentUser = data.user;
+                saveCurrentUserLocal(currentUser);
+                await loadPoems();
+                render();
+            }
+        } catch (err) { console.error('Failed to save profile', err); }
         exitEditMode();
     }
 
@@ -212,14 +221,7 @@
     // support clicking the separate post button (same as form submit focus)
     postBtnProfile.addEventListener('click', () => { document.getElementById('postTitleP').focus(); });
 
-    window.addEventListener('storage', (event) => {
-        if (event.key === 'poems') {
-            const updated = JSON.parse(event.newValue || '[]');
-            poems.splice(0, poems.length, ...updated);
-            render();
-        }
-    });
-
+    await loadPoems();
     render();
 
     document.addEventListener('languagechange', () => {

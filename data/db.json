@@ -1,0 +1,26 @@
+{
+  "users": [
+    {
+      "id": 1786133360706,
+      "name": "Test User",
+      "email": "test@example.com",
+      "password": "passwd"
+    }
+  ],
+  "poems": [
+    {
+      "id": 1786133469599,
+      "likes": 0,
+      "createdAt": "2026-08-07T20:11:09.599Z",
+      "title": "A New Poem",
+      "author": "Test User",
+      "mood": "hopeful",
+      "excerpt": "An excerpt",
+      "description": "An excerpt",
+      "lines": [
+        "line1",
+        "line2"
+      ]
+    }
+  ]
+}

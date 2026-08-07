@@ -1,9 +1,4 @@
-let users = JSON.parse(localStorage.getItem('users')) || [];
 let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-
-function saveUsers() {
-    localStorage.setItem('users', JSON.stringify(users));
-}
 
 function setCurrentUser(user) {
     currentUser = user;
@@ -12,22 +7,36 @@ function setCurrentUser(user) {
     renderAuthState();
 }
 
-function registerUser(name, email, password) {
-    if (users.find((u) => u.email === email)) {
-        return { ok: false, error: t('emailAlreadyRegistered') };
+async function registerUser(name, email, password) {
+    try {
+        const res = await fetch('/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) return { ok: false, error: data.error || t('emailAlreadyRegistered') };
+        setCurrentUser(data.user);
+        return { ok: true };
+    } catch (e) {
+        return { ok: false, error: t('networkError') };
     }
-    const user = { id: Date.now(), name, email, password };
-    users.push(user);
-    saveUsers();
-    setCurrentUser({ id: user.id, name: user.name, email: user.email });
-    return { ok: true };
 }
 
-function loginUser(email, password) {
-    const user = users.find((u) => u.email === email && u.password === password);
-    if (!user) return { ok: false, error: t('invalidCredentials') };
-    setCurrentUser({ id: user.id, name: user.name, email: user.email });
-    return { ok: true };
+async function loginUser(email, password) {
+    try {
+        const res = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) return { ok: false, error: data.error || t('invalidCredentials') };
+        setCurrentUser(data.user);
+        return { ok: true };
+    } catch (e) {
+        return { ok: false, error: t('networkError') };
+    }
 }
 
 function logout() {
@@ -156,17 +165,17 @@ function initAuth() {
         });
     }
 
-    authForm.addEventListener('submit', (e) => {
+    authForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const name = document.getElementById('authName').value.trim();
         const email = document.getElementById('authEmail').value.trim().toLowerCase();
         const password = document.getElementById('authPassword').value;
 
         if (mode === 'signup') {
-            const res = registerUser(name || email.split('@')[0], email, password);
+            const res = await registerUser(name || email.split('@')[0], email, password);
             if (!res.ok) return alert(res.error);
         } else {
-            const res = loginUser(email, password);
+            const res = await loginUser(email, password);
             if (!res.ok) return alert(res.error);
         }
 
