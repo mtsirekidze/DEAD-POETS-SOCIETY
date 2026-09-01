@@ -30,8 +30,8 @@ function writeFile(data) {
 }
 
 function getLocalData() {
-  if (process.env.NODE_ENV === 'production') {
-    throw new Error('DATABASE_URL is required in production.');
+  if (process.env.NODE_ENV === 'production' && !DATABASE_URL) {
+    console.warn('Running in production without DATABASE_URL — falling back to local file-based DB. This is not recommended for real production.');
   }
   return readFile();
 }

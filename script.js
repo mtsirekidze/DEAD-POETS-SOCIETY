@@ -124,6 +124,12 @@ function renderPoems() {
             selectedPoemId = poem.id;
             render();
         });
+        // Make the whole card clickable for convenience
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', () => {
+            selectedPoemId = poem.id;
+            render();
+        });
         card.querySelector('.like-btn').addEventListener('click', (e) => {
             e.stopPropagation();
             toggleLike(poem.id);

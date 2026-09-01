@@ -75,6 +75,16 @@ function updateAuthModeUI(mode) {
             passwordInput.placeholder = t('passwordPlaceholder');
             passwordInput.dataset.i18nPlaceholder = 'passwordPlaceholder';
         }
+        const submitBtn = document.getElementById('authSubmit');
+        const saveBtn = document.getElementById('authSave');
+        if (submitBtn) {
+            submitBtn.textContent = t('signup');
+            submitBtn.dataset.i18n = 'signup';
+        }
+        if (saveBtn) {
+            saveBtn.style.display = 'inline-block';
+            saveBtn.textContent = 'Save';
+        }
     } else {
         authTitle.dataset.i18n = 'login';
         authTitle.textContent = t('login');
@@ -84,6 +94,15 @@ function updateAuthModeUI(mode) {
         if (passwordInput) {
             passwordInput.placeholder = t('loginPasswordPlaceholder');
             passwordInput.dataset.i18nPlaceholder = 'loginPasswordPlaceholder';
+        }
+        const submitBtn = document.getElementById('authSubmit');
+        const saveBtn = document.getElementById('authSave');
+        if (submitBtn) {
+            submitBtn.textContent = t('login');
+            submitBtn.dataset.i18n = 'login';
+        }
+        if (saveBtn) {
+            saveBtn.style.display = 'none';
         }
     }
 }
@@ -162,6 +181,14 @@ function initAuth() {
         toggleAuth.addEventListener('click', () => {
             mode = mode === 'login' ? 'signup' : 'login';
             updateAuthModeUI(mode);
+        });
+    }
+
+    const saveBtnEl = document.getElementById('authSave');
+    if (saveBtnEl) {
+        saveBtnEl.addEventListener('click', async () => {
+            // trigger form submit programmatically
+            authForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
         });
     }
 

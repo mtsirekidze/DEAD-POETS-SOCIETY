@@ -1,18 +1,17 @@
 {
-  "users": [],
-  "poems": [
+  "users": [
     {
-      "id": 1786139851567,
-      "likes": 0,
-      "createdAt": "2026-08-07T21:57:31.567Z",
-      "title": "აწს",
-      "author": "mate Cirekidze",
-      "mood": "other",
-      "excerpt": "",
-      "description": "",
-      "lines": [
-        "წაწა"
-      ]
+      "id": 1788297956466,
+      "name": "სად",
+      "email": "asf@gmail.com",
+      "password": "f6e821e0e5158a7594cf80269fab9f8221dac88c648f765a6607a85cff8885a0"
+    },
+    {
+      "id": 1788298436833,
+      "name": "Test User",
+      "email": "testuser@example.com",
+      "password": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f"
     }
-  ]
+  ],
+  "poems": []
 }
