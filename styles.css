@@ -13,15 +13,15 @@
 
 /* Site header similar to Poetry International */
 .site-header {
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     padding: 16px 0 8px;
 }
 
 .topbar {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 18px 18px 14px;
+    gap: 8px;
+    padding: 12px 12px 10px;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 18px;
     border: 1px solid rgba(47, 34, 51, 0.08);
@@ -119,21 +119,21 @@
 
 .top-poets-section {
     display: grid;
-    gap: 18px;
-    margin-bottom: 22px;
+    gap: 10px;
+    margin-bottom: 12px;
 }
 
 .top-poets-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 16px;
+    gap: 8px;
 }
 
 .top-card {
     background: rgba(255, 255, 255, 0.92);
     border: 1px solid rgba(47, 34, 51, 0.08);
     border-radius: 24px;
-    padding: 20px;
+    padding: 12px;
     box-shadow: 0 18px 40px rgba(132, 100, 120, 0.08);
 }
 
@@ -155,7 +155,7 @@
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 12px;
+    gap: 6px;
 }
 
 .rank-list li {
@@ -270,7 +270,7 @@ body {
 .page-shell {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 28px 24px 48px;
+    padding: 14px 12px 24px;
 }
 
 /* Modal styles */
@@ -325,12 +325,12 @@ body {
 }
 
 .form-row {
-    margin-bottom: 12px
+    margin-bottom: 6px
 }
 
 .form-row label {
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 3px;
     color: var(--muted);
     font-weight: 600
 }
@@ -384,11 +384,11 @@ body {
 .profile-head {
     display: grid;
     grid-template-columns: 120px 1fr;
-    gap: 20px;
+    gap: 12px;
     align-items: center;
-    padding-bottom: 20px;
+    padding-bottom: 12px;
     border-bottom: 1px solid rgba(47, 34, 51, 0.08);
-    margin-bottom: 24px;
+    margin-bottom: 12px;
 }
 
 .profile-avatar-wrap {
@@ -412,8 +412,9 @@ body {
 }
 
 .profile-meta p {
-    margin: 4px 0 12px;
+    margin: 2px 0 6px;
     color: var(--muted);
+}
 }
 
 .profile-meta textarea {
@@ -428,9 +429,9 @@ body {
 
 .profile-stats {
     display: flex;
-    gap: 18px;
+    gap: 8px;
     color: var(--muted);
-    margin-top: 12px;
+    margin-top: 8px;
 }
 
 .profile-stats span {
@@ -441,7 +442,7 @@ body {
 }
 
 .profilePoems .poem-card {
-    margin-bottom: 12px;
+    margin-bottom: 6px;
 }
 
 #postPreview {
@@ -460,9 +461,9 @@ body {
 .hero {
     display: grid;
     grid-template-columns: 1.6fr 0.9fr;
-    gap: 20px;
+    gap: 12px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 246, 239, 0.96));
-    padding: 32px;
+    padding: 18px;
     border-radius: 32px;
     box-shadow: 0 28px 60px rgba(132, 100, 120, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.8);
@@ -494,7 +495,7 @@ h1 {
     color: var(--muted);
     font-size: 1rem;
     max-width: 620px;
-    margin-bottom: 18px;
+    margin-bottom: 10px;
 }
 
 .search-box input {
@@ -548,13 +549,13 @@ h1 {
 }
 
 .controls {
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .pill-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 6px;
 }
 
 .pill {
@@ -645,8 +646,8 @@ h1 {
 .app-grid {
     display: grid;
     grid-template-columns: minmax(360px, 1.35fr) minmax(320px, 0.85fr);
-    gap: 28px;
-    margin-top: 24px;
+    gap: 14px;
+    margin-top: 12px;
 }
 
 .list-section,
@@ -655,7 +656,7 @@ h1 {
     border: 1px solid rgba(47, 34, 51, 0.08);
     border-radius: 24px;
     box-shadow: 0 24px 60px rgba(132, 100, 120, 0.08);
-    padding: 24px;
+    padding: 12px;
     backdrop-filter: blur(14px);
 }
 
@@ -663,8 +664,8 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 18px;
-    gap: 16px;
+    margin-bottom: 10px;
+    gap: 8px;
 }
 
 .section-header h3 {
@@ -679,14 +680,14 @@ h1 {
 
 .card-grid {
     display: grid;
-    gap: 12px;
+    gap: 6px;
 }
 
 .poem-card {
     background: white;
     border: 1px solid rgba(47, 34, 51, 0.08);
     border-radius: 24px;
-    padding: 20px;
+    padding: 10px;
     cursor: pointer;
     transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
 }
@@ -727,16 +728,16 @@ h1 {
 }
 
 .poem-card h4 {
-    margin-bottom: 6px;
+    margin-bottom: 3px;
 }
 
 .meta-row {
     display: flex;
     justify-content: space-between;
-    gap: 8px;
+    gap: 4px;
     color: var(--muted);
     font-size: 0.9rem;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
 .poem-card p {
@@ -758,14 +759,14 @@ h1 {
 
 .detail-description {
     color: var(--muted);
-    margin-bottom: 18px;
+    margin-bottom: 10px;
 }
 
 .poem-body {
     display: grid;
-    gap: 10px;
+    gap: 4px;
     font-size: 1rem;
-    line-height: 1.8;
+    line-height: 1.5;
     color: var(--text);
 }
 

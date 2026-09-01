@@ -33,7 +33,7 @@
     const avatarUpload = document.getElementById('avatarUpload');
     const changeAvatar = document.getElementById('changeAvatar');
     const postBtnProfile = document.getElementById('postBtnProfile');
-    const logoutProfile = document.getElementById('logoutProfile');
+    const logoutBtn = document.getElementById('logoutBtn');
 
     function saveCurrentUserLocal(u) { if (u) localStorage.setItem('currentUser', JSON.stringify(u)); else localStorage.removeItem('currentUser'); }
 
@@ -213,7 +213,7 @@
 
     translatePage();
 
-    logoutProfile.addEventListener('click', () => {
+    logoutBtn.addEventListener('click', () => {
         localStorage.removeItem('currentUser');
         window.location.href = 'index.html';
     });
